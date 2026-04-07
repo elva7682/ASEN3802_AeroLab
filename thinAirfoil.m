@@ -1,4 +1,4 @@
-function [alpha] = thinAirfoil(c,m,p,N)
+function [cl] = thinAirfoil(c,m,p,N, alpha)
 
 x = linspace(0,1,N);
 
@@ -16,6 +16,12 @@ end
 
 integrand = dzdx .* (cos(theta)-1);
 
-alpha = (-1/pi)*trapz(theta, integrand);
+alpha0 = (-1/pi)*trapz(theta, integrand);
+
+cl = zeros(length(alpha),1);
+for i = 1:length(alpha)
+    cl(i) = (2*pi)*(alpha(i) - alpha0);
+end
+
 
 end
