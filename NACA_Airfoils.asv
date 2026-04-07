@@ -42,20 +42,20 @@ for i=1:length(x_u)
 
 
 if x_u < p*c
-    yc(i) = (m * (x_u(i)/p^2)) .* (2*p - (x_u(i)/c));
+    yc(i) = @(x) (m * (x_u(i)/p^2)) .* (2*p - (x_u(i)/c));
     dyc(i) = ((2*m/(p^2)) * (p - (x_u(i)/c)));
 elseif x<=c
-    yc(i) = ((m * (c-x_u(i))) / (1 - p)^2) * 1 + (x_u(i)/c) - 2*p;
-    dyc(i) = ((2 * m) / (1 - p)^2) * (p - (x_u(i)/c));
+    yc(i) = ((m * (c-x)) / (1 - p)^2) * 1 + (x/c) - 2*p;
+    dyc(i) = ((2 * m) / (1 - p)^2) * (p - (x/c));
 else
     disp("oopsies!!")
 end
 
 end
 
-xi  = zeros(1, length(x_u));
+xi  = zeros(1, n);
 
-for i=1:length(x_u)
+for i=1:n
     xi(i) = atan(dyc(i));
 end
 
