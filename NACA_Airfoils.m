@@ -1,0 +1,75 @@
+function [x_b,y_b] = NACA_Airfoils(m,p,t,c,n)
+
+arguments (Input)
+    m
+    p
+    t
+    c
+    n
+end
+
+arguments (Output)
+    x_b
+    y_b
+end
+
+% m  max camber, in % of chord
+% p  location of max camber, in % of chord * 10
+% t  max thickness, in % of chord
+
+m = m/100;
+p = p/10;
+t = t/100;
+
+% Equivalent Angles
+d_theta = 2*pi/n;
+theta = flip(0:d_theta:2*pi);
+% At this stage, the x values go from TE around CW
+x = (c/2)*cos(theta) + (c/2)*ones(size(theta));
+x_u = x(theta <= pi);
+x_l = x(theta > pi);
+% At the end of calculations recombine as x = [x_l, x_u] to maintain CW
+% from TE
+
+% x = linspace(0, c, n); % panel locations vector
+
+yt = zeros(1, n);
+
+for i=1:n
+    yt(i) = (t/0.2) * c * (0.2969 * sqrt(x(i)/c) - 0.1260 * (x(i)/c) - 0.3516 * (x(i)/c).^2 + 0.2843 * (x(i)/c).^3 - 0.1036 * (x(i)/c).^4);
+end
+
+if x < p*c
+    yc = @(x) (m * (x/p^2)) .* (2*p - (x/c));
+    dyc = ((2*m/(p^2)) * (p - (x/c)));
+elseif x<=c
+    yc = ((m * (c-x)) / (1 - p)^2) * 1 + (x/c) - 2*p;
+    dyc = ((2 * m) / (1 - p)^2) * (p - (x/c));
+else
+    disp("oopsies!!")
+end
+
+xi  = zeros(1, n);
+
+for i=1:n
+    xi(i) = atan(dyc(i));
+end
+
+xu = zeros(1, n);
+yu = zeros(1, n);
+xl = zeros(1, n);
+yl = zeros(1, n);
+
+for i=1:n
+    xu(i) = x(i) - yt(i) * sin(xi(i));
+    yu(i) = yc(i) + yt(i) * cos(xi(i));
+    xl(i) = x(i) + yt(i) * sin(xi(i));
+    yl(i) = yc(i) - yt(i) * cos(xi(i));
+end
+
+xu = flip(xu);
+yu = flip(yu);
+x_b = [xl, xu];
+y_b = [yl, yu];
+
+end
