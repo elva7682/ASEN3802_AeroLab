@@ -12,7 +12,7 @@ close all
 
 figure
 hold on
-scatter(x_0021,y_0021)
+plot(x_0021,y_0021, "-o")
 xlim([0,1])
 ylim([-0.5,0.5])
 title("NACA0021 Airfoil")
@@ -26,7 +26,7 @@ hold off
 
 figure
 hold on
-scatter(x_2421,y_2421)
+plot(x_2421,y_2421, "-o")
 plot(x_2421,yc_2421)
 xlim([0,1])
 ylim([-0.5,0.5])
