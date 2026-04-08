@@ -1,4 +1,4 @@
-function [x_b,y_b,yt, yc] = NACA_Airfoils(m,p,t,c,n)
+function [x_b,y_b, yc] = NACA_Airfoils(m,p,t,c,n)
 
 arguments (Input)
     m
@@ -11,7 +11,6 @@ end
 arguments (Output)
     x_b
     y_b
-    yt
     yc
 end
 
@@ -35,56 +34,54 @@ x_l = x(theta > pi);
 
 % x = linspace(0, c, n); % panel locations vector
 
-yt = zeros(1,length(x_u));
-yc = zeros(1,length(x_u));
-dyc = zeros(1,length(x_u));
+yt = zeros(1,length(x));
+yc = zeros(1,length(x));
+dyc = zeros(1,length(x));
 
-for i=1:length(x_u)
-    yt(i) = (t/0.2) * c * (0.2969 * sqrt(x_u(i)/c) - 0.1260 * (x_u(i)/c) - 0.3516 * (x_u(i)/c).^2 + 0.2843 * (x_u(i)/c).^3 - 0.1036 * (x_u(i)/c).^4);
+for i=1:length(x)
+    yt(i) = (t/0.2) * c * (0.2969 * sqrt(x(i)/c) - 0.1260 * (x(i)/c) - 0.3516 * (x(i)/c).^2 + 0.2843 * (x(i)/c).^3 - 0.1036 * (x(i)/c).^4);
 
 
-if x_u < p*c
-    yc(i) = (m * (x_u(i)/p^2)) .* (2*p - (x_u(i)/c));
-    dyc(i) = ((2*m/(p^2)) * (p - (x_u(i)/c)));
-elseif x<=c
-    yc(i) = (m*(c-x_u(i))/((1-p)^2))*(1 + x_u(i)/c - 2*p)
-    dyc(i) = ((2 * m) / (1 - p)^2) * (p - (x_u(i)/c));
+if x(i) < p*c
+    yc(i) = (m * (x(i)/p^2)) .* (2*p - (x(i)/c));
+    dyc(i) = ((2*m/(p^2)) * (p - (x(i)/c)));
+elseif x(i)<=c
+    yc(i) = (m*(c-x(i))/((1-p)^2))*(1 + x(i)/c - 2*p);
+    dyc(i) = ((2 * m) / (1 - p)^2) * (p - (x(i)/c));
 else
     disp("oopsies!!")
 end
 
 end
 
-xi  = zeros(1, length(x_u));
+xi  = zeros(1, length(x));
 
-for i=1:length(x_u)
+for i=1:length(x)
     xi(i) = atan(dyc(i));
 end
 
 
-xl = zeros(1, length(x_l));
+yu = zeros(1, length(x_u));
 yl = zeros(1, length(x_l));
 
+ycu = yc(theta <= pi);
+ycl = yc(theta > pi);
+
+ytu = yt(theta <= pi);
+ytl = yt(theta > pi);
+
 for i=1:length(x_u)
-    yu(i) = yc(i) + yt(i) * cos(xi(i));
+    yu(i) = ycu(i) + ytu(i) * cos(xi(i));
 end
 
 for i=1:length(x_l)
-    yl(i) = yc(i) - yt(i) * cos(xi(i));
+    yl(i) = ycl(i) - ytl(i) * cos(xi(i));
 end
 
 
 x_b = [x_l, x_u];
 y_b = [yl, yu];
 
-
-figure
-hold on
-scatter(x_b,y_b)
-xlim([0,1])
-ylim([0,1])
-plot(x_u,yt, 'Color', 'r')
-plot(x_u,yc, 'Color', 'm')
 
 
 end
