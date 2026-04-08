@@ -1,4 +1,4 @@
-function [x_b,y_b] = NACA_Airfoils(m,p,t,c,n)
+function [x_b,y_b,yt, yc] = NACA_Airfoils(m,p,t,c,n)
 
 arguments (Input)
     m
@@ -11,6 +11,8 @@ end
 arguments (Output)
     x_b
     y_b
+    yt
+    yc
 end
 
 % m  max camber, in % of chord
@@ -42,38 +44,47 @@ for i=1:length(x_u)
 
 
 if x_u < p*c
-    yc(i) = @(x) (m * (x_u(i)/p^2)) .* (2*p - (x_u(i)/c));
+    yc(i) = (m * (x_u(i)/p^2)) .* (2*p - (x_u(i)/c));
     dyc(i) = ((2*m/(p^2)) * (p - (x_u(i)/c)));
 elseif x<=c
-    yc(i) = ((m * (c-x)) / (1 - p)^2) * 1 + (x/c) - 2*p;
-    dyc(i) = ((2 * m) / (1 - p)^2) * (p - (x/c));
+    yc(i) = (m*(c-x_u(i))/((1-p)^2))*(1 + x_u(i)/c - 2*p)
+    dyc(i) = ((2 * m) / (1 - p)^2) * (p - (x_u(i)/c));
 else
     disp("oopsies!!")
 end
 
 end
 
-xi  = zeros(1, n);
+xi  = zeros(1, length(x_u));
 
-for i=1:n
+for i=1:length(x_u)
     xi(i) = atan(dyc(i));
 end
 
-xu = zeros(1, n);
-yu = zeros(1, n);
-xl = zeros(1, n);
-yl = zeros(1, n);
 
-for i=1:n
-    xu(i) = x(i) - yt(i) * sin(xi(i));
+xl = zeros(1, length(x_l));
+yl = zeros(1, length(x_l));
+
+for i=1:length(x_u)
     yu(i) = yc(i) + yt(i) * cos(xi(i));
-    xl(i) = x(i) + yt(i) * sin(xi(i));
+end
+
+for i=1:length(x_l)
     yl(i) = yc(i) - yt(i) * cos(xi(i));
 end
 
-xu = flip(xu);
-yu = flip(yu);
-x_b = [xl, xu];
+
+x_b = [x_l, x_u];
 y_b = [yl, yu];
+
+
+figure
+hold on
+scatter(x_b,y_b)
+xlim([0,1])
+ylim([0,1])
+plot(x_u,yt, 'Color', 'r')
+plot(x_u,yc, 'Color', 'm')
+
 
 end

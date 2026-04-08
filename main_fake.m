@@ -14,7 +14,8 @@ m = 0;
 p = 0;
 t = 12;
 
-[x, y] = NACA_Airfoils(m,p,t,c,N);
+[x, y,yt,yc] = NACA_Airfoils(m,p,t,c,N);
+
 
 
 
