@@ -70,13 +70,20 @@ ycl = yc(theta > pi);
 ytu = yt(theta <= pi);
 ytl = yt(theta > pi);
 
+xiu = xi(theta <= pi);
+xil = xi(theta > pi);
+
 for i=1:length(x_u)
-    yu(i) = ycu(i) + ytu(i) * cos(xi(i));
+    yu(i) = ycu(i) + ytu(i) * cos(xiu(i));
 end
 
 for i=1:length(x_l)
-    yl(i) = ycl(i) - ytl(i) * cos(xi(i));
+    yl(i) = ycl(i) - ytl(i) * cos(xil(i));
 end
+
+% yu = ycu + ytu + cos(xiu);
+% yl = ycl + ytl + cos(xil);
+
 
 
 x_b = [x_l, x_u];

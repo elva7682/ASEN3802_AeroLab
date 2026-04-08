@@ -16,9 +16,6 @@ scatter(x_0021,y_0021)
 xlim([0,1])
 ylim([-0.5,0.5])
 title("NACA0021 Airfoil")
-xlabel("x position (% chord)")
-ylabel("y position (% chord)")
-grid on
 hold off
 
 [x_2421, y_2421, yc_2421] = NACA_Airfoils(2,4,21,1,50);
@@ -31,9 +28,6 @@ plot(x_2421,yc_2421)
 xlim([0,1])
 ylim([-0.5,0.5])
 title("NACA2421 Airfoil")
-xlabel("x position (% chord)")
-ylabel("y position (% chord)")
-grid on
 hold off
 
 
@@ -101,15 +95,13 @@ naca_0012 = load("0012.mat");
 
 figure
 hold on
-plot(naca_0006.data(:,1),naca_0006.data(:,2), "DisplayName","NACA0006 Experimental", 'Color','r')
-plot(naca_0012.data(:,1),naca_0012.data(:,2), "DisplayName","NACA0012 Experimental", 'Color','y')
-plot(alpha, naca_0006_calc, "DisplayName","NACA0006 Predicted", 'Color','r', 'LineStyle', '--')
-plot(alpha, naca_0012_calc, "DisplayName","NACA0012 Predicted", 'Color','y', 'LineStyle', '--')
-plot(alpha, naca_0018_calc, "DisplayName","NACA0018 Predicted", 'Color','c', 'LineStyle', '--')
-legend('Location', 'northwest')
+plot(naca_0006.data(:,1),naca_0006.data(:,2), "DisplayName","NACA0006 Experimental")
+plot(naca_0012.data(:,1),naca_0012.data(:,2), "DisplayName","NACA0012 Experimental")
+plot(alpha, naca_0006_calc, "DisplayName","NACA0006 Predicted")
+plot(alpha, naca_0012_calc, "DisplayName","NACA0012 Predicted")
+plot(alpha, naca_0018_calc, "DisplayName","NACA0018 Predicted")
+legend()
 title("Lift Distribution Comparison")
-xlabel("Angle of Attack (Degrees)")
-ylabel("Lift Coefficient (cl)")
 grid on
 hold off
 
@@ -132,8 +124,8 @@ naca_4412 = load("4412.mat");
 
 
 % Calculate 0 Lift angle of attack
-[cl2412, naca_2412_alpha0] = thinAirfoil(1,2,4,N, alpha);
-[cl4412,naca_4412_alpha0] = thinAirfoil(1,2,4,N, alpha);
+[cl2412, naca_2412_alpha0] = thinAirfoil(1,0,0,N, alpha);
+[cl4412,naca_4412_alpha0] = thinAirfoil(1,0,0,N, alpha);
 
 
 
@@ -156,15 +148,14 @@ end
 
 figure
 hold on
-plot(naca_2412.data(:,1),naca_2412.data(:,2), "DisplayName","NACA2412 Experimental", 'Color','r')
-plot(naca_0012.data(:,1),naca_0012.data(:,2), "DisplayName","NACA0012 Experimental", 'Color','y')
-plot(naca_4412.data(:,1),naca_4412.data(:,2), "DisplayName","NACA2412 Experimental", 'Color','c')
-plot(alpha, naca_2412_calc, "DisplayName","NACA2412 Predicted", 'Color','r', 'LineStyle', '--')
-plot(alpha, naca_0012_calc, "DisplayName","NACA0012 Predicted", 'Color','y', 'LineStyle', '--')
-plot(alpha, naca_4412_calc, "DisplayName","NACA4412 Predicted", 'Color','c', 'LineStyle', '--')
-xlabel("Angle of Attack (Degrees)")
-ylabel("Lift Coefficient (cl)")
-legend('Location', 'northwest')
+plot(naca_2412.data(:,1),naca_2412.data(:,2), "DisplayName","NACA2412 Experimental", 'r')
+plot(naca_0012.data(:,1),naca_0012.data(:,2), "DisplayName","NACA0012 Experimental", 'c')
+plot(naca_4412.data(:,1),naca_4412.data(:,2), "DisplayName","NACA2412 Experimental", '')
+plot(alpha, naca_2412_calc, "DisplayName","NACA2412 Predicted")
+plot(alpha, naca_0012_calc, "DisplayName","NACA0012 Predicted")
+plot(alpha, naca_4412_calc, "DisplayName","NACA4412 Predicted")
+
+legend()
 grid on
 title("Lift Distribution Comparison")
 hold off

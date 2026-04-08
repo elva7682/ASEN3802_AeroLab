@@ -1,6 +1,7 @@
-function [cl] = thinAirfoil(c,m,p,N, alpha)
+function [cl, alpha0] = thinAirfoil(c,m,p,N, alpha)
 
 x = linspace(0,1,N);
+alpha = alpha*pi/180;
 
 dzdx = zeros(length(x),1);
 theta = zeros(length(x),1);
