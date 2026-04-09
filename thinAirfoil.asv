@@ -1,8 +1,5 @@
 function [cl, alpha0] = thinAirfoil(c,m,p,N, alpha)
 
-
-m = m/100;
-p = p/10;
 x = linspace(0,1,N);
 alpha = alpha*pi/180;
 
@@ -21,13 +18,12 @@ end
 integrand = dzdx .* (cos(theta)-1);
 
 alpha0 = (-1/pi)*trapz(theta, integrand);
-
-
+alpha0*180/p
 
 cl = zeros(length(alpha),1);
 for i = 1:length(alpha)
     cl(i) = (2*pi)*(alpha(i) - alpha0);
 end
-alpha0 = alpha0*180/pi;
+
 
 end

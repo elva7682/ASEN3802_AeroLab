@@ -25,6 +25,7 @@ t = t/100;
 % Equivalent Angles
 d_theta = 2*pi/n;
 theta = flip(0:d_theta:2*pi);
+
 % At this stage, the x values go from TE around CW
 x = (c/2)*cos(theta) + (c/2)*ones(size(theta));
 x_u = x(theta <= pi);
