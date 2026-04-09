@@ -2,7 +2,7 @@
 % Call NACA_Airfoil with NACA 0012
 m = 0; p = 0; t = 12; c = 1;
 alpha = 12; % [deg]
-N_exact = 500;
+N_exact = 1000;
 N = 1;
 
 [x_be, y_be] = NACA_Airfoils(m,p,t,c,N_exact);
