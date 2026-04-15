@@ -1,4 +1,27 @@
 function [e, c_L, c_Di] = PLLT(b, a0_t, a0_r, c_t, c_r, aero_t, aero_r, geo_t, geo_r, N)
+    %{
+    Inputs / Outputs Description:
+    ----------------------------------------
+    e       : Span efficiency factor (computed and returned)
+    C_L     : Coefficient of lift (computed and returned)
+    C_Di    : Induced coefficient of drag (computed and returned)
+    b       : Wing span (ft)
+    
+    a0_t    : Sectional lift curve slope at the tip (per rad)
+    a0_r    : Sectional lift curve slope at the root (per rad)
+    
+    c_t     : Chord length at the tip (ft)
+    c_r     : Chord length at the root (ft)
+    
+    aero_t  : Zero-lift angle of attack at the tip (deg)
+    aero_r  : Zero-lift angle of attack at the root (deg)
+    
+    geo_t   : Geometric angle of attack at the tip (deg)
+    geo_r   : Geometric angle of attack at the root (deg)
+    
+    N       : Number of odd terms used in the circulation series expansion
+    %}
+
     %% Initial Variables
     % Assume symmetric
     
