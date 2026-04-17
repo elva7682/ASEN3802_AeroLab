@@ -107,13 +107,14 @@ grid on;
 plot(plot_c_L3, "LineWidth", 1.5)
 plot(plot_c_L2, "LineWidth", 1.5)
 plot(plot_c_L1, "LineWidth", 1.5)
+yline(c_L_exact, "--")
 xline(length(plot_c_L1), "--")
 xline(length(plot_c_L2), "--")
 xline(length(plot_c_L3), "--")
 xlabel("Number of Odd Terms")
 ylabel("Coefficent of Lift")
 title("Coefficent of Lift Based on Odd Number of Terms for Different Error Values")
-legend(num2str(percent_error(3)),num2str(percent_error(2)),num2str(percent_error(1)))
+legend(num2str(percent_error(3)),num2str(percent_error(2)),num2str(percent_error(1)), "Exact Value")
 
 figure() % c_Di
 hold on;
@@ -121,13 +122,14 @@ grid on;
 plot(plot_c_Di3, "LineWidth", 1.5)
 plot(plot_c_Di2, "LineWidth", 1.5)
 plot(plot_c_Di1, "LineWidth", 1.5)
+yline(c_Di_exact, "--")
 xline(length(plot_c_Di1), "--")
 xline(length(plot_c_Di2), "--")
 xline(length(plot_c_Di3), "--")
 xlabel("Number of Odd Terms")
 ylabel("Coefficent of Induced Drag")
 title("Coefficent of Induced Drag Based on Odd Number of Terms for Different Error Values")
-legend(num2str(percent_error(3)),num2str(percent_error(2)),num2str(percent_error(1)))
+legend(num2str(percent_error(3)),num2str(percent_error(2)),num2str(percent_error(1)), "Exact Value")
 
 % %% Deliverable 3: (Table 2)
 % V = 100; % [knots]
