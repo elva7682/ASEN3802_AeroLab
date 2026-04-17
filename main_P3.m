@@ -103,9 +103,13 @@ Part3_Table2 = renamevars(Part3_Table2, "Var5", "C_Di");
 %% Deliverable 2: (Plots --> c_L, c_Di vs N)
 figure() % c_L
 hold on;
+grid on;
 plot(plot_c_L3, "LineWidth", 1.5)
 plot(plot_c_L2, "LineWidth", 1.5)
 plot(plot_c_L1, "LineWidth", 1.5)
+xline(length(plot_c_L1), "--")
+xline(length(plot_c_L2), "--")
+xline(length(plot_c_L3), "--")
 xlabel("Number of Odd Terms")
 ylabel("Coefficent of Lift")
 title("Coefficent of Lift Based on Odd Number of Terms for Different Error Values")
@@ -113,9 +117,13 @@ legend(num2str(percent_error(3)),num2str(percent_error(2)),num2str(percent_error
 
 figure() % c_Di
 hold on;
+grid on;
 plot(plot_c_Di3, "LineWidth", 1.5)
 plot(plot_c_Di2, "LineWidth", 1.5)
 plot(plot_c_Di1, "LineWidth", 1.5)
+xline(length(plot_c_Di1), "--")
+xline(length(plot_c_Di2), "--")
+xline(length(plot_c_Di3), "--")
 xlabel("Number of Odd Terms")
 ylabel("Coefficent of Induced Drag")
 title("Coefficent of Induced Drag Based on Odd Number of Terms for Different Error Values")
@@ -134,13 +142,3 @@ legend(num2str(percent_error(3)),num2str(percent_error(2)),num2str(percent_error
 % %% Deliverable 4: (Plots --> C_D vs alpha)
 % 
 % %% Deliverable 5: (Plots --> L/D vs alpha
-% 
-% 
-% 
-% 
-% %% Extra Notes
-% % This results in a linear spanwise variation of cross-sectional lift
-% % slope and zero-lift angle of attack
-% 
-% % The wing is also twisted such that the geometric angle of attack varies
-% % linearly from 1◦ at the root to 0◦ at the tips.
