@@ -25,8 +25,8 @@ alpha = 4; % [rad]
 geo_r = 1; % [deg]
 geo_t = 0; % [deg]
 
-a0_r = 2*pi; % [rad^-1] 
-a0_t = 2*pi; % [rad^-1] % symmetric airfoil
+a0_r = 0.1033; % [rad^-1] 
+a0_t = 0.1059; % [rad^-1]
 
 % Determine number of of odd terms (N) for each percent error
 percent_error = [0.1; 0.01; 0.001];
@@ -92,13 +92,13 @@ for i = 1:length(percent_error)
 end
 
 %% Deliverable 1: (Table 1)
-Part3_Table2 = table(percent_error, [plot_NL1,plot_NL2,plot_NL3]', [plot_ND1,plot_ND2,plot_ND3]', ...
+Part3_Table1 = table(percent_error, [plot_NL1,plot_NL2,plot_NL3]', [plot_ND1,plot_ND2,plot_ND3]', ...
     [plot_c_L1(end),plot_c_L2(end),plot_c_L3(end)]',[plot_c_Di1(end),plot_c_Di2(end),plot_c_Di3(end)]'); 
 
-Part3_Table2 = renamevars(Part3_Table2, "Var2", "NL");
-Part3_Table2 = renamevars(Part3_Table2, "Var3", "ND");
-Part3_Table2 = renamevars(Part3_Table2, "Var4", "C_L");
-Part3_Table2 = renamevars(Part3_Table2, "Var5", "C_Di");
+Part3_Table1 = renamevars(Part3_Table1, "Var2", "NL");
+Part3_Table1 = renamevars(Part3_Table1, "Var3", "ND");
+Part3_Table1 = renamevars(Part3_Table1, "Var4", "C_L");
+Part3_Table1 = renamevars(Part3_Table1, "Var5", "C_Di");
 
 %% Deliverable 2: (Plots --> c_L, c_Di vs N)
 figure() % c_L
