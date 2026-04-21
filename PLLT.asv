@@ -24,11 +24,6 @@ function [e, c_L, c_Di] = PLLT(b, a0_t, a0_r, c_t, c_r, aero_t, aero_r, geo_t, g
 
     %% Initial Variables
     % Assume symmetric
-
-    aero_t = deg2rad(aero_t);
-    aero_r = deg2rad(aero_r);
-    geo_t = deg2rad(geo_t);
-    geo_r = deg2rad(geo_r);
     
     %% Initialize Theta0
     % Square Matrix
@@ -113,7 +108,7 @@ function [e, c_L, c_Di] = PLLT(b, a0_t, a0_r, c_t, c_r, aero_t, aero_r, geo_t, g
 
     %% Coefficient of Lift
 
-    S = c_t*b + 0.5*b*(c_r - c_t);
+    S = c_t*b + b*(c_r - 2*c_t);
 
     AR = (b^2)/S;
 
