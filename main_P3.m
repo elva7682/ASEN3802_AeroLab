@@ -19,8 +19,8 @@ c_t = 3 + 8.5/12; % [ft]
 
 alpha = 4; % [deg]
 
-[cl_r, aero_r] = thinAirfoil(c_r,m_r,p_r,Np,alpha);
-[cl_t, aero_t] = thinAirfoil(c_t,m_t,p_t,Np,alpha);
+[cl_r, aero_r] = ThinAirfoil(c_r,m_r,p_r,Np,alpha);
+[cl_t, aero_t] = ThinAirfoil(c_t,m_t,p_t,Np,alpha);
 
 geo_r = 5; % [deg]
 geo_t = 4; % [deg]
@@ -109,14 +109,14 @@ grid on;
 plot(plot_c_L3, "LineWidth", 1.5)
 plot(plot_c_L2, "LineWidth", 1.5)
 plot(plot_c_L1, "LineWidth", 1.5)
-yline(c_L_exact, "--")
 xline(length(plot_c_L1), "--")
 xline(length(plot_c_L2), "--")
 xline(length(plot_c_L3), "--")
+yline(c_L_exact, "r--")
 xlabel("Number of Odd Terms")
 ylabel("Coefficent of Lift")
 title("Coefficent of Lift Based on Odd Number of Terms for Different Error Values")
-legend(num2str(percent_error(3)),num2str(percent_error(2)),num2str(percent_error(1)), "Exact Value")
+legend(num2str(percent_error(3)),num2str(percent_error(2)),num2str(percent_error(1)),"10% Rel Error","1% Rel Error","0.1% Rel Error","Exact Value")
 
 figure() % c_Di
 hold on;
@@ -124,14 +124,14 @@ grid on;
 plot(plot_c_Di3, "LineWidth", 1.5)
 plot(plot_c_Di2, "LineWidth", 1.5)
 plot(plot_c_Di1, "LineWidth", 1.5)
-yline(c_Di_exact, "--")
 xline(length(plot_c_Di1), "--")
 xline(length(plot_c_Di2), "--")
 xline(length(plot_c_Di3), "--")
+yline(c_Di_exact, "r--")
 xlabel("Number of Odd Terms")
 ylabel("Coefficent of Induced Drag")
 title("Coefficent of Induced Drag Based on Odd Number of Terms for Different Error Values")
-legend(num2str(percent_error(3)),num2str(percent_error(2)),num2str(percent_error(1)), "Exact Value")
+legend(num2str(percent_error(3)),num2str(percent_error(2)),num2str(percent_error(1)),"10% Rel Error","1% Rel Error","0.1% Rel Error","Exact Value")
 
 %% Deliverable 3: (Table 2)
 V = 100 *1.68781; % [knots --> ft/s]
@@ -165,14 +165,14 @@ alpha4 = linspace(-15,15,100);
 N = 200;
 for i = 1:length(alpha4)
 
-    [cl_r, aero_r4] = thinAirfoil(c_r,m_r,p_r,Np,alpha4(i));
-    [cl_t, aero_t4] = thinAirfoil(c_t,m_t,p_t,Np,alpha4(i));
+    [cl_r, aero_r4] = ThinAirfoil(c_r,m_r,p_r,Np,alpha4(i));
+    [cl_t, aero_t4] = ThinAirfoil(c_t,m_t,p_t,Np,alpha4(i));
 
     % Account for geometric twist
     geo_r_i = alpha4(i) + 1;
     geo_t_i = alpha4(i) + 0;
 
-    [~,~,c_Di4(i)] = PLLT(b, a0_t, a0_r, c_t, c_r, aero_t4, aero_r4, geo_t_i, geo_r_i, N);
+    [~,c_L4(i),c_Di4(i)] = PLLT(b, a0_t, a0_r, c_t, c_r, aero_t4, aero_r4, geo_t_i, geo_r_i, N);
 end
 
 cl0012 = load("0012.mat");
@@ -189,29 +189,36 @@ CD2412 = interp1(dat2412.data(:,1), dat2412.data(:,2), CL2412, 'pchip');
 CLPT5 = (CL0012+CL2412)./2;
 
 cd4 = (CD2412 + CD0012)./2;
-
 c_D_total = cd4 + c_Di4;
 
 figure()
 hold on;
 grid on;
-plot(alpha4,c_D_total)
-plot(alpha4, cd4)
-plot(alpha4, c_Di4)
-xlabel("Angle of Attack")
-ylabel("Coefficient of Total Drag")
-legend('Total Drag','Profile Drag','Induced Drag')
+plot(alpha4,c_D_total, "LineWidth", 1.5)
+plot(alpha4,cd4, "LineWidth", 1.5)
+plot(alpha4,cd.*ones(size(alpha4)), "LineWidth", 1.5)
+plot(alpha4, c_Di4, "LineWidth", 1.5)
+
+xlabel("Angle of Attack (deg)")
+ylabel("Drag Coefficient")
+legend('Total Drag','Profile Drag (Changing w/\alpha)', 'Profile Drag (@ \alpha = 4)','Induced Drag')
 title("Drag Breakdown Vs. Angle of Attack")
 
 %% Deliverable 5: (Plots --> L/D vs alpha)
-L5 = 1/2*rho*V^2*S*CLPT5;
-D5 = 1/2*rho*V^2*S*(c_D_total);
+L5 = 1/2*rho*V^2*S*c_L4.*ones(size(alpha4));
+L5_dig = 1/2*rho*V^2*S*CLPT5;
+
+D5 = 1/2*rho*V^2*S.*(c_D_total);
 
 LD_ratio5 = L5./D5;
+LD_ratio5_dig = L5_dig./D5;
 
 figure()
+hold on;
 grid on;
-plot(alpha4, LD_ratio5)
-xlabel("Angle of Attack")
+plot(alpha4, LD_ratio5,"LineWidth", 1.5)
+plot(alpha4, LD_ratio5_dig, "LineWidth", 1.5)
+xlabel("Angle of Attack (deg)")
 ylabel("Lift Over Drag Ratio")
+legend("PLLT", "Digitizer")
 title("LD Ratio Vs. Angle of Attack")
