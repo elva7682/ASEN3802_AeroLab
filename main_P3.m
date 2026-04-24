@@ -19,8 +19,8 @@ c_t = 3 + 8.5/12; % [ft]
 
 alpha = 4; % [deg]
 
-[cl_r, aero_r] = ThinAirfoil(c_r,m_r,p_r,Np,alpha);
-[cl_t, aero_t] = ThinAirfoil(c_t,m_t,p_t,Np,alpha);
+[cl_r, aero_r] = thinAirfoil(c_r,m_r,p_r,Np,alpha);
+[cl_t, aero_t] = thinAirfoil(c_t,m_t,p_t,Np,alpha);
 
 geo_r = 5; % [deg]
 geo_t = 4; % [deg]
@@ -165,8 +165,8 @@ alpha4 = linspace(-15,15,100);
 N = 200;
 for i = 1:length(alpha4)
 
-    [cl_r, aero_r4] = ThinAirfoil(c_r,m_r,p_r,Np,alpha4(i));
-    [cl_t, aero_t4] = ThinAirfoil(c_t,m_t,p_t,Np,alpha4(i));
+    [cl_r, aero_r4] = thinAirfoil(c_r,m_r,p_r,Np,alpha4(i));
+    [cl_t, aero_t4] = thinAirfoil(c_t,m_t,p_t,Np,alpha4(i));
 
     % Account for geometric twist
     geo_r_i = alpha4(i) + 1;
@@ -175,7 +175,21 @@ for i = 1:length(alpha4)
     [~,~,c_Di4(i)] = PLLT(b, a0_t, a0_r, c_t, c_r, aero_t4, aero_r4, geo_t_i, geo_r_i, N);
 end
 
-cd4 = cd*ones(size(alpha4));
+cl0012 = load("0012.mat");
+cl2412 = load("2412.mat");
+dat0012 = load("0012clcd.mat");
+dat2412 = load("2412clcd.mat");
+
+CL0012 = interp1(cl0012.data(:,1), cl0012.data(:,2), alpha4, 'pchip');
+CL2412 = interp1(cl2412.data(:,1), cl2412.data(:,2), alpha4, 'pchip');
+
+CD0012 = interp1(dat0012.data(:,1), dat0012.data(:,2), CL0012, 'pchip');
+CD2412 = interp1(dat2412.data(:,1), dat2412.data(:,2), CL2412, 'pchip');
+
+CLPT5 = (CL0012+CL2412)./2;
+
+cd4 = (CD2412 + CD0012)./2;
+
 c_D_total = cd4 + c_Di4;
 
 figure()
@@ -190,7 +204,7 @@ legend('Total Drag','Profile Drag','Induced Drag')
 title("Drag Breakdown Vs. Angle of Attack")
 
 %% Deliverable 5: (Plots --> L/D vs alpha)
-L5 = 1/2*rho*V^2*S*c_L.*ones(size(alpha4));
+L5 = 1/2*rho*V^2*S*CLPT5;
 D5 = 1/2*rho*V^2*S*(c_D_total);
 
 LD_ratio5 = L5./D5;
